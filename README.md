@@ -1,11 +1,61 @@
-node.js refresher
 
-#  import
-CommonJS (CJS) → default in Node.js (require / module.exports)
-ES Modules (ESM) → modern JavaScript style (import / export)
 
-1. we'll not configure all our routes in server.js
- for routes we have <h1>routes</h1> folder
+|| PROJECT-DOCUMENTTAION AND CONCEPTS USED WITH EXPLANATION ||
+1.initializing node project
+
+# npm init
+
+ enrty point : server.js
+ npm install express : to install express in the project
+ npm install -D nodemon : automatically  restarts server in case of changes and since we do not need this in production environment so it is installed as  dev dependency (i.e. useful while development but not needed for production environment)
+
+
+# setting scripts in package.json
+
+This keeps your workflow consistent across the team - everyone uses the same commands regardless of their environment, and you don't need to remember complex command syntax.
+"dev": " nodemon server.js",
+"start": "node server.js"
+now you can run command  like 
+npm run dev 
+npm run start
+
+npm has built-in shortcuts for certain commonly-used script names. These are:
+
+npm start → npm run start
+npm test (or npm t) → npm run test
+npm stop → npm run stop
+npm restart → npm run restart
+
+For these scripts, you can skip the run keyword.
+Why This Exists
+Historical reasons: start and test are so commonly used that npm decided to give them special treatment to save developers some typing. 
+Convention over configuration: npm assumes that almost every project will have a way to start and test it, so they made these the most convenient to run.
+Everything Else Needs "npm run"
+
+
+
+# import and export 
+CommonJS (CJS) → default in Node.js (require("express") / module.exports = myFunction; )
+ES Modules (ESM) → modern JavaScript style (import express from "express"/ export default myFunction;)
+
+# dotenv file
+npm install dotenv
+a .env file stores environment variables - sensitive configuration data that shouldn't be hardcoded in your source code.
+why to use dotenv file??
+
+JS files can execute code when imported
+If compromised, they can run malicious scripts
+.env files are just plain text - no code execution possible
+
+Environment-Specific Issues
+Hosting platforms (Heroku, Vercel, AWS) have built-in support for environment variables
+They don't run JS files to get config - they expect environment variables
+You'd need different deployment strategies
+
+2. Routes
+as app grows number of routes will grow so configuring all of them in  server.js isn't good idea 
+so we'll have routes folder to handle the routes
+ 
 routes:
 in this folder  we'll configure all our routes
 
@@ -71,5 +121,26 @@ res.end() → end the response.
 
 👉 Basically, res is your toolbox to craft the reply you want to send back.
 
+
+Authentication module
+we will provide some enepoints  which will help user to register themselves and login theen with the help of access token they can manage their contact
+
 <!-- err object -->
 
+
+Architecture 
+
+middleaware FOLDER
+it contains all the  custom middleware
+
+controller FOLDER
+ it contain all the  bussiness logic like  contactController it contains all the logic for routes mentioned in contactRoutes 
+
+routes FOLDER
+it containns all the files for routes 
+
+constants file will contain all my constants 
+
+model FOLDER
+
+it will contain all the schemas 
