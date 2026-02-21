@@ -144,3 +144,73 @@ constants file will contain all my constants
 model FOLDER
 
 it will contain all the schemas 
+
+// what happens if the req doesn't have any response ?
+
+1️⃣ Server receives the request
+
+Express matches the route and executes the handler function.
+
+Example:
+
+app.get("/test", (req, res) => {
+   console.log("Route executed");
+   // No res.send(), no res.json(), no res.end()
+});
+
+
+The function runs. But nothing is sent back.
+
+2️⃣ Connection stays open
+
+HTTP works on a request → response model.
+
+Until one of these happens:
+
+res.send()
+
+res.json()
+
+res.end()
+
+res.redirect()
+
+next(err) (leading to error middleware)
+
+the response is not finished.
+
+So the browser keeps waiting.
+
+3️⃣ What the user sees
+
+Eventually:
+
+The browser keeps loading (spinner keeps spinning)
+
+After some time, it throws a timeout error like:
+
+ERR_EMPTY_RESPONSE
+
+Request timed out
+
+504 Gateway Timeout (if behind a proxy like Nginx)
+
+The exact behavior depends on:
+
+Browser timeout settings
+
+Reverse proxy timeout (if deployed)
+
+Cloud provider configuration
+
+4️⃣ What happens on the server side?
+
+The request consumes memory.
+
+The socket connection remains open.
+
+If many such requests accumulate, your server can exhaust resources.
+
+In worst cases → Denial of Service by accident.
+
+This is a real production bug.
