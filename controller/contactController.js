@@ -7,20 +7,27 @@
 // It wraps your async function and automatically forwards errors to next().
 
 const asyncHandler = require("express-async-handler")
-
 const Contact = require('../models/contactModel')
+
+// now  since this should be private route so  now we have enforced token validation to  all our routes  we  update our queries  according to user_id  so   particular tokenn can 
+//  do CRUD on their  contacts only
 
 
 //@desc get all contacts
 //@route GET /api/contacts
 //@ access public
+// now private
+
 
 const getContacts = asyncHandler (async(req, res)=>{
     // now we can finally  enforce schema to our data
-    const contacts = await Contact.find();
+    const contacts = await Contact.find({user_id:req.user.id});
+    console.log({contacts})
+    
     // res.status(200).json({message:"get all contacts"});  
     // this was what we  were returning when we don't connectd to the db 
     res.status(200).json(contacts); 
+    
 
 })
 
@@ -53,9 +60,12 @@ const createContact = asyncHandler(async(req, res)=>{
             name,
             email,
             phone,
+           
 
             // cause we already have destructured these and also key and value are same  we can use above syntax 
             // if we  didn't had  destrucured then we can get details through  req.body.name and similaraly other details as well 
+            // now we are adding user_id to assciate  uer with their contacts
+            user_id : req.user.id
         }
      );
 

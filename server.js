@@ -22,10 +22,17 @@ const express = require("express");
 const errorHandler = require("./middleware/errorHandler");
 const dotenv = require("dotenv").config();
 const connectDb = require("./config/dbConnection")
-
-
 connectDb();
 const app = express();
+//  TODO:   pehle ye route neche tha and not working after checking all possible  faulting points we didn't get any error then changed it's position and it worked but why ???
+app.use("/api/contacts", require("./routes/contactRoutes"));
+
+// for testing purpose
+
+// app.use((req, res, next) => {
+//     console.log("Incoming request:", req.method, req.url);
+//     next();
+// });
 
 // const port = process.env.PORT;  TODO:: WHY USING  process.env is giving error "server refuse to connect " but server is runnning 
 const port = 5000; 
@@ -53,7 +60,7 @@ End the response
 
 Or pass control using next() */
 
-app.use("/api/contacts", require("./routes/contactRoutes"));
+// app.use("/api/contacts", require("./routes/contactRoutes"));
 
 /*
 app.use(): This method mounts middleware or routers to the application's request-processing stack. Unlike app.get() or app.post(), 

@@ -133,7 +133,7 @@ const loginUser = asyncHandler (async(req, res) =>
                 // second parameter is access token secret
             }, 
             process.env.ACCESS_TOKEN_SECRET,
-            {expiresIn:"1m"}
+            {expiresIn:"30m"}
             
             // we also need to set third parameter i.e expiration date so that if token is expired user should not be able to use the token in order to call the api 
 
@@ -162,9 +162,13 @@ const loginUser = asyncHandler (async(req, res) =>
 
 const currentUser = asyncHandler (async(req, res) =>
 {
-    res.json({message :"current user"});
+    // res.json({message :"current user"});
+    res.json(req.user);
 });
 
+
+
+// well now we need to  protecct our contact routesn so that only logged_in user can perform crud operations on contacts which they have created for  themselves 
 
 
 
